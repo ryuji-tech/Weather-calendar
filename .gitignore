@@ -7,3 +7,9 @@
 
 # logs
 *.log
+
+# 収録元動画（容量が大きいのでコミットしない。GIFは docs/demo.gif のみ追跡）
+*.mov
+*.mp4
+*.webm
+*.m4v

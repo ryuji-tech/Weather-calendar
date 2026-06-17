@@ -8,9 +8,7 @@
 
 **▶ ライブデモ：https://ryuji-tech.github.io/Weather-calendar/**
 
-<!-- 公開後、↓ にスクリーンショットと天気切替の GIF を追加してください -->
-<!-- ![天気の切り替え](docs/demo.gif) -->
-<!-- ![スクリーンショット](docs/screenshot.png) -->
+![天気の切り替え（晴れ・曇り・霧・雨・雷雨・雪）](docs/demo.gif)
 
 ---
 
