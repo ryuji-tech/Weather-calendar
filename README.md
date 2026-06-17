@@ -6,7 +6,7 @@
 
 > A calendar whose background reacts to the live weather of any city — built with the Open-Meteo API and three.js / GLSL shaders.
 
-**▶ ライブデモ：https://ryuji-tech.github.io/weather-calendar/**
+**▶ ライブデモ：https://ryuji-tech.github.io/Weather-calendar/**
 
 <!-- 公開後、↓ にスクリーンショットと天気切替の GIF を追加してください -->
 <!-- ![天気の切り替え](docs/demo.gif) -->
