@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weather Calendar — 天気で変わる背景</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/common.css">
+</head>
+<body data-wx="clear">
+  <!--
+    ============================================================
+    Weather Calendar — 画面構成（3レイヤー）
+      (1) <canvas id="bg">   … three.js が天気背景を描く最背面レイヤー
+      (2) <main>             … 時計・天気サマリ・カレンダー（情報レイヤー）
+      (3) <div class="dock"> … 天気プレビュー / ライブ取得の操作レイヤー
+    body[data-wx] に現在の天気キー(clear/rain/snow…)が入り、CSSが文字色等を調整する。
+    ロジックは js/app.js、背景描画エンジンは js/weather-bg.js。
+    ============================================================
+  -->
+  <!-- (1) 天気背景の描画先。WeatherBG.init() がこの canvas に WebGL で描画する -->
+  <canvas id="bg"></canvas>
+
+  <main>
+    <!-- top header: clock (left) + weather (right) -->
+    <div class="topbar">
+      <div class="clock" id="clock"></div>
+      <!-- weather summary -->
+      <div class="wx" data-screen-label="weather-summary">
+      <div class="now">
+        <div class="locrow">
+          <div class="place" id="placeName">東京</div>
+          <!-- 都市検索：入力→Open-Meteo Geocoding APIで候補表示→選択で緯度経度を確定 -->
+          <div class="searchwrap">
+            <div class="searchbar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input id="search" type="text" placeholder="都市を検索（例：札幌, Paris）" autocomplete="off">
+            </div>
+            <div class="results" id="results"></div>
+          </div>
+        </div>
+        <div class="nowtext">
+          <div class="wxline"><span id="wxIcon">☀</span><span id="wxLabel">快晴</span></div>
+          <div class="temp" id="temp">26<span class="deg">°</span></div>
+          <div class="extra" id="extra"></div>
+          <div class="status" id="status"></div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- calendar -->
+    <div class="calhead" data-screen-label="calendar">
+      <div class="calnav">
+        <button class="navbtn" id="prevM" aria-label="前の月">‹</button>
+        <div class="caltitle" id="calTitle">2026年 6月</div>
+        <button class="navbtn" id="nextM" aria-label="次の月">›</button>
+        <button class="todaybtn" id="todayBtn">今日</button>
+      </div>
+    </div>
+    <div class="weekdays"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
+    <!-- 日付マスは app.js の renderCalendar() が動的に生成（6週=42マス。各マスはメモ編集可） -->
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <!-- (3) 操作ドック：天気プレビュー(手動切替) ＋「現在の天気を取得」(Open-Meteo連携) -->
+  <div class="dock" data-screen-label="controls">
+    <button class="dockToggle" id="dockToggle" title="開閉">⌄</button>
+    <div class="dockbody">
+      <div class="dockgroup">
+        <span class="glabel">天気プレビュー</span>
+        <div class="chips">
+          <button class="chip on" data-wx="clear">☀ 快晴</button>
+          <button class="chip" data-wx="partly">⛅ 時々曇り</button>
+          <button class="chip" data-wx="cloudy">☁ 曇り</button>
+          <button class="chip" data-wx="fog">🌫 霧</button>
+          <button class="chip" data-wx="rain">🌧 雨</button>
+          <button class="chip" data-wx="thunder">⛈ 雷雨</button>
+          <button class="chip" data-wx="snow">❄ 雪</button>
+        </div>
+      </div>
+      <div class="dockgroup">
+        <span class="glabel">ライブ</span>
+        <div style="display:flex;gap:7px;">
+          <button class="ibtn" id="liveBtn">現在の天気を取得</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- attribution (Open-Meteo data is CC BY 4.0) -->
+  <div class="credit">
+    Weather data by <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a>
+    <span>(CC BY 4.0)</span>
+  </div>
+
+  <script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+  <script src="js/weather-bg.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
