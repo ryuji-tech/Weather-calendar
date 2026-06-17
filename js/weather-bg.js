@@ -120,7 +120,9 @@
     uniform float uTime;
     void main(){
       float spd = aSpeed * ${snow ? '0.22' : '1.0'};
-      float fall = mod(position.y - uTime*spd, 2.0);
+      // uTime とともに phase を増やす → y=1.0-phase が 1→-1 へ減少＝上から下へ落下。
+      // 2.0 で mod して循環（下端に着いたら上端へ戻す）。符号を - にすると上昇して見えるので注意。
+      float fall = mod(position.y + uTime*spd, 2.0);
       float y = 1.0 - fall;
       float sway = ${snow ? '0.14' : '0.04'};
       float x = position.x + sway*sin(uTime*${snow ? '0.6' : '0.4'} + position.z*6.2831);
